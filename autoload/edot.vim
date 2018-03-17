@@ -5,7 +5,11 @@ let g:autoloaded_edot = 1
 
 if !exists('g:edot_vimrc')
   let g:edot_vimrc = resolve($MYVIMRC)
+  if empty(glob(g:edot_vimrc))
+    let g:edot_vimrc = resolve($HOME . '/.vim/vimrc')
+  endif
 endif
+
 if !exists('g:edot_vimdir')
   let g:edot_vimdir = resolve($HOME . '/.vim')
 endif
@@ -20,7 +24,7 @@ endf
 
 func! s:exec(cmd, args)
   let file = len(a:args) ? s:path(a:args[0]) : g:edot_vimrc
-  if empty(file)
+  if empty(glob(file))
     call s:echoerr_novimrc()
   else
     exec printf(a:cmd, file)
